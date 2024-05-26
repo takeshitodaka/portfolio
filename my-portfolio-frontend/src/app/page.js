@@ -8,15 +8,19 @@ export default function Home() {
     const response = await notion.databases.query({
       database_id: process.env.EXP_DATABASE_ID,
     });
-    //ページ情報
-    // console.log(response);
     //プロパティ情報
-    response?.results?.map((result, index)=>{
+    response?.results?.map((row, index)=>{
       // 行の処理
-      if(result.properties?.detail?.rich_text[index]) console.log(result.properties?.detail?.rich_text[index].text.content)
-    
-    // console.log(response.results[0].properties.detail.rich_text[0].text.content);
-  });
+      console.log(row);
+      Object.keys(row.properties).map((cell)=>{
+        const type = row.properties[cell].type
+        if(type === 'date'){
+          console.log(row.properties[cell][type].start);  
+        }else{
+          console.log(row.properties[cell][type][0].plain_text);
+        }
+      })
+    });
   })();
 
   return (
